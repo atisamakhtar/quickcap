@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -11,11 +12,11 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { generateImageCaption } from '@/ai/flows/generate-image-caption';
 import type { GenerateImageCaptionOutput, CaptionWithTone } from '@/ai/flows/generate-image-caption';
-import { UploadCloud, Copy, RefreshCcw, Sparkles, Twitter, Facebook, Linkedin, Instagram, Settings, List } from 'lucide-react';
+import { UploadCloud, Copy, RefreshCcw, Sparkles, Twitter, Facebook, Linkedin, Instagram, Settings, List, Languages, Hash, SmilePlus } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Hash, Languages, SmilePlus } from 'lucide-react';
+
 
 const WRITING_TONES = ["Casual", "Professional", "Witty", "Fun", "Engaging", "Informative", "Persuasive", "Storytelling"];
 const LANGUAGES = ["English", "Spanish", "French", "German", "Italian", "Portuguese", "Hindi", "Japanese", "Chinese (Simplified)"];
@@ -34,7 +35,7 @@ export default function InstaCaptionAIPage() {
   const [pageLoaded, setPageLoaded] = React.useState(false);
   const resultsContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const [numberOfCaptions, setNumberOfCaptions] = React.useState<number>(1); // Default to 1 caption
+  const [numberOfCaptions, setNumberOfCaptions] = React.useState<number>(1);
   const [writingTone, setWritingTone] = React.useState<string>('Casual');
   const [includeHashtags, setIncludeHashtags] = React.useState<boolean>(true);
   const [includeEmojis, setIncludeEmojis] = React.useState<boolean>(true);
@@ -169,8 +170,8 @@ export default function InstaCaptionAIPage() {
   const mainContentClass = `transition-opacity duration-1000 ease-in-out ${pageLoaded ? 'opacity-100' : 'opacity-0'}`;
 
   return (
-    <div className={`min-h-screen bg-background flex flex-col selection:bg-primary/20 selection:text-primary ${mainContentClass}`}>
-      <header className={`relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] bg-primary/10 transform transition-all duration-700 ease-out ${pageLoaded ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}`}>
+    <div className={`flex flex-col selection:bg-primary/20 selection:text-primary ${mainContentClass}`}>
+      <section className={`relative w-full h-[30vh] sm:h-[40vh] md:h-[50vh] bg-primary/10 transform transition-all duration-700 ease-out ${pageLoaded ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}`}>
         <video
           autoPlay
           loop
@@ -180,26 +181,20 @@ export default function InstaCaptionAIPage() {
           poster="https://picsum.photos/seed/amazinglady/1600/900" 
           data-ai-hint="woman excited mobile"
         >
-          {/* 
-            Using a general placeholder video. 
-            Replace with a video fitting the "lady amazed/excited with mobile" theme.
-            Example: https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4 
-                     https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4
-          */}
-          <source src="/media/header-video.mp4" type="video/mp4" />
+          <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-t from-black/80 via-black/60 to-black/30">
           <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-xl">InstaCaptionAI</h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 mt-3 sm:mt-4 drop-shadow-lg max-w-xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-xl">InstaCaptionAI</h1>
+            <p className="text-md sm:text-lg md:text-xl text-white/90 mt-2 sm:mt-3 drop-shadow-lg max-w-xl mx-auto">
               Generate engaging social media captions instantly with fine-tuned control!
             </p>
           </div>
         </div>
-      </header>
+      </section>
 
-      <main className={`w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 flex-grow transform transition-all duration-700 ease-out delay-200 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+      <div className={`w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 flex-grow transform transition-all duration-700 ease-out delay-200 ${pageLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
         <div className="grid md:grid-cols-2 gap-8 md:items-stretch mb-8">
           {/* Column 1: Image Upload / Preview */}
           <div className={`flex flex-col transition-all duration-500 ease-out ${pageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
@@ -332,7 +327,7 @@ export default function InstaCaptionAIPage() {
                 <Button 
                    onClick={handleGenerateClick} 
                    className="w-full"
-                   disabled={!imageDataUri || isLoading} // Disable if no image or loading
+                   disabled={!imageDataUri || isLoading} 
                  >
                    <RefreshCcw className="mr-2 h-4 w-4" /> 
                    { captionResult ? "Regenerate Captions" : "Generate Captions" }
@@ -453,9 +448,9 @@ export default function InstaCaptionAIPage() {
             </Card>
           )}
         </div>
-      </main>
+      </div>
 
-      <footer className={`w-full mt-auto py-6 text-center text-muted-foreground text-sm border-t border-border bg-background/50 transition-opacity duration-1000 ease-in-out delay-500 ${pageLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <footer className={`w-full py-6 text-center text-muted-foreground text-sm border-t border-border bg-background/50 transition-opacity duration-1000 ease-in-out delay-500 ${pageLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <p>Powered by Generative AI & Firebase Studio</p>
         <p className="text-xs mt-1">Video placeholder by <a href="https://peach.blender.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Blender Foundation</a> (Big Buck Bunny / For Bigger Joyrides)</p>
       </footer>
