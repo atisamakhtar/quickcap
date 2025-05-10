@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -20,6 +21,8 @@ const GenerateImageCaptionInputSchema = z.object({
     ),
   numberOfCaptions: z.number().min(1).max(5).default(3).describe("The number of captions to generate."),
   writingTone: z.string().default('Casual').describe("The desired tone for the captions (e.g., Casual, Professional, Fun, Witty, Engaging)."),
+  eventType: z.string().optional().describe("The specific event or context of the image (e.g., Wedding, Birthday, Family Walkout). This helps in tailoring the caption."),
+  customHint: z.string().optional().describe("An optional user-provided hint for more specific caption generation (e.g., 'attending marriage ceremony of friend', 'walking in backyard')."),
   includeHashtags: z.boolean().default(true).describe("Whether to include hashtags in the captions."),
   includeEmojis: z.boolean().default(true).describe("Whether to include emojis in the captions."),
   language: z.string().default('English').describe("The language for the generated captions."),
@@ -51,6 +54,8 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI social media expert. For the provided image, generate {{numberOfCaptions}} distinct, engaging caption(s).
 Each caption must adhere to a "{{writingTone}}" tone.
 The language for the captions should be {{language}}.
+{{#if eventType}}The image is related to a "{{eventType}}" event/context. Please make sure the captions are relevant to this.{{/if}}
+{{#if customHint}}The user has provided the following hint for the image: "{{customHint}}". Incorporate this hint naturally into the captions if relevant.{{/if}}
 Each caption should be between 10 and 50 words.
 
 {{#if includeHashtags}}
@@ -66,6 +71,8 @@ Do not include emojis in the captions.
 {{/if}}
 
 Focus on making each post appealing and likely to get engagement (likes, shares, comments) according to its tone.
+{{#if eventType}}Consider the "{{eventType}}" context when crafting the captions.{{/if}}
+{{#if customHint}}Also, consider the user's hint: "{{customHint}}".{{/if}}
 
 Return the output as a JSON object with a single key "captions".
 "captions" should be an array of objects. The number of objects in the array must be exactly {{numberOfCaptions}}.
@@ -110,3 +117,4 @@ const generateImageCaptionFlow = ai.defineFlow(
     return output;
   }
 );
+
